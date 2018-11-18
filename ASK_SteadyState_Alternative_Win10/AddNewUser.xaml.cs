@@ -33,6 +33,7 @@ namespace ASK_SteadyState_Alternative_Win10
             PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
             string userName = name.Text;
             string userDescription = description.Text;
+            string userPassword = password.Text;
             if (userName == "")
             {
                 MessageBox.Show("Group has to have a name!");
@@ -48,6 +49,7 @@ namespace ASK_SteadyState_Alternative_Win10
             UserPrincipal user = new UserPrincipal(ctx);
             user.Name = userName;
             user.Description = userDescription;
+            user.SetPassword(userPassword);
             user.Enabled = true;
             user.Save();
             

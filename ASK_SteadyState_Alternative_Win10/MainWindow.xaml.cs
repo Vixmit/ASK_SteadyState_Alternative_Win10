@@ -121,7 +121,10 @@ namespace ASK_SteadyState_Alternative.TreeView_control
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-
+            User user = (User)this.treeView.SelectedItem;
+            EditUser window = new EditUser(user);
+            window.Show();
+            this.Close();
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)

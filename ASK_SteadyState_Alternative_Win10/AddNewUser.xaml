@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         Title="AddNewUser" Height="450" Width="500">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="110"/>
-        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Height="29" Margin="10,40,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="110"/>
-        <TextBox x:Name="name" HorizontalAlignment="Left" Height="29" Margin="188,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="110"/>
-        <TextBox x:Name="description" HorizontalAlignment="Left" Height="50" Margin="188,40,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="110"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="70"/>
+        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Height="20" Margin="10,40,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Width="70"/>
+        <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Height="20" Margin="10,100,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="70"/>
+        <TextBox x:Name="name" HorizontalAlignment="Left" Height="20" Margin="180,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="110"/>
+        <TextBox x:Name="description" HorizontalAlignment="Left" Height="50" Margin="180,40,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="110"/>
+        <TextBox x:Name="password" HorizontalAlignment="Left" Height="20" Margin="180,100,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="110"/>
         <Button x:Name="save" Content="Save" HorizontalAlignment="Left" Height="30" Margin="357,349,0,0" VerticalAlignment="Top" Width="90" Click="save_Click"/>
         <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Height="30" Margin="211,349,0,0" VerticalAlignment="Top" Width="90" Click="cancel_Click"/>
         

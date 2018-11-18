@@ -16,3 +16,7 @@ D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternat
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\ASK_SteadyState_Alternative_Win10.pdb
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\AddNewGroup.g.cs
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\AddNewGroup.baml
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\AddNewUser.g.cs
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\EditUser.g.cs
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\AddNewUser.baml
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\EditUser.baml

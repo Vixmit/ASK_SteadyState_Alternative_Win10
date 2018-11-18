@@ -17,3 +17,6 @@ D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternat
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\ASK_SteadyState_Alternative_Win10.csproj.CoreCompileInputs.cache
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\ASK_SteadyState_Alternative_Win10.exe
 D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\ASK_SteadyState_Alternative_Win10.pdb
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\ASK_SteadyState_Alternative_Win10.csprojAssemblyReference.cache
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\EditUser.g.cs
+D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Release\EditUser.baml
