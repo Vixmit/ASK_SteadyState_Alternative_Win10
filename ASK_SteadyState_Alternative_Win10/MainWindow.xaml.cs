@@ -6,6 +6,10 @@ using System.Diagnostics;
 using System.IO;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Windows.Input;
+using System.Windows.Controls;
+using System.Text;
+using ASK_SteadyState_Alternative_Win10;
 
 namespace ASK_SteadyState_Alternative.TreeView_control
 {
@@ -31,10 +35,65 @@ namespace ASK_SteadyState_Alternative.TreeView_control
             return reader;
         }
 
+       
         public MainWindow()
         {
             InitializeComponent();
+            refreshTree();
+        }
 
+        public void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var tree = (TreeView)sender;
+            var selectedItem = tree.SelectedItem;
+
+            if (selectedItem.GetType() == typeof(Group))
+            {
+                Group temp = (Group)selectedItem;
+                textBoxInformations.Text = temp.Describe();
+                editButton.Visibility = Visibility.Visible;
+                deleteButton.Visibility = Visibility.Visible;
+                addUserButton.Visibility = Visibility.Visible;
+            }
+
+            else if (selectedItem.GetType() == typeof(User))
+            {
+                User temp = (User)selectedItem;
+                textBoxInformations.Text = temp.Describe();
+                editButton.Visibility = Visibility.Visible;
+                deleteButton.Visibility = Visibility.Visible;
+                addUserButton.Visibility = Visibility.Hidden;
+            }
+        }
+
+        /*     private void treeView_MouseDown(object sender, MouseButtonEventArgs e)
+             {
+                 var tree = (TreeView)sender;
+                 var selectedItem = tree.SelectedItem;
+                 if (selectedItem == null)
+                     return;
+
+                 if (e.RightButton == MouseButtonState.Pressed)
+                 {
+                     if (selectedItem.GetType() == typeof(Group))
+                     {
+
+                     }
+                     else if(selectedItem.GetType() == typeof(User))
+                     {
+
+                     } 
+                 }
+             }*/
+
+        private void addNewGroup_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewGroup window = new AddNewGroup(this);
+            window.Show();
+        }
+
+        public void refreshTree()
+        {
             List<Group> groups = new List<Group>();
 
             PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
@@ -53,36 +112,42 @@ namespace ASK_SteadyState_Alternative.TreeView_control
                 PrincipalSearchResult<Principal> grList = gp.GetMembers();
 
                 foreach (var s in grList)
-                    newGroup.Members.Add(new User() { Name = s.Name, Age = 0, principal = s });
+                    newGroup.Members.Add(new User() { Name = s.Name, principal = s });
                 groups.Add(newGroup);
 
             }
-
-
-
             treeView.ItemsSource = groups;
         }
-    }
 
-    public class Group
-    {
-        public Group()
+        private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Members = new ObservableCollection<User>();
+
         }
 
-        public string Name { get; set; }
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = treeView.SelectedItem;
 
-        public ObservableCollection<User> Members { get; set; }
+            if (selectedItem.GetType() == typeof(Group))
+            {
+                Group temp = (Group)selectedItem;
+                temp.setWindow(this);
+                temp.Delete();
+            }
 
-        public Principal principal { get; set; }
+            else if (selectedItem.GetType() == typeof(User))
+            {
+                User temp = (User)selectedItem;
+                temp.setWindow(this);
+                temp.Delete();
+            }
+        }
+
+        private void addUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewUser window = new AddNewUser(this);
+            window.Show();
+        }
     }
-    public class User
-    {
-        public string Name { get; set; }
 
-        public int Age { get; set; }
-
-        public Principal principal { get; set; }
-    }
 }
