@@ -4,17 +4,17 @@
 exe
 C#
 .cs
-D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\obj\Debug\
+C:\Users\Vixmit\OneDrive\Documents\Visual Studio 2017\Repositories\ASK_SteadyState_Alternative_Win10_v5\ASK_SteadyState_Alternative_Win10\obj\Debug\
 ASK_SteadyState_Alternative_Win10
 none
 false
 DEBUG;TRACE
-D:\Projects\c#\ASK_SteadyState_Alternative_Win10-master\ASK_SteadyState_Alternative_Win10\App.xaml
-4-331622167
+C:\Users\Vixmit\OneDrive\Documents\Visual Studio 2017\Repositories\ASK_SteadyState_Alternative_Win10_v5\ASK_SteadyState_Alternative_Win10\App.xaml
+31202495483
 
-10-810297146
-201007793965
-AddNewGroup.xaml;AddNewUser.xaml;EditUser.xaml;MainWindow.xaml;
+9-1108370738
+21-1955107179
+View\AddNewUserWindow.xaml;View\MainWindow.xaml;View\UserWindow.xaml;
 
 False
 
