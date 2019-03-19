@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ASK_SteadyState_Alternative_Win10
+namespace WpfApp1
 {
     /// <summary>
     /// Interaction logic for App.xaml
