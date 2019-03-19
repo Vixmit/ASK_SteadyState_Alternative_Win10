@@ -27,10 +27,10 @@ namespace WpfApp1
 
         void save_Click(object sender, EventArgs e)
         {
-            if ((password.Password != password2.Password) || name.Text == string.Empty)
+            if((password.Password != password2.Password)||name.Text==string.Empty)
             {
                 //MBox error
-                MessageBox.Show("chujnia jest");
+                MessageBox.Show("ERROR! Passwords are not equal or name field is empty");
                 return;
             }
 
@@ -39,10 +39,9 @@ namespace WpfApp1
             string userDescription = description.Text;
             string userPassword = password.Password;
 
-            GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, "Shared");
+            GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx,"Shared");
             GroupPrincipal group2;
-            if ((group2 = GroupPrincipal.FindByIdentity(ctx, "Users")) == null)
-            {
+            if ((group2 = GroupPrincipal.FindByIdentity(ctx, "Users")) == null){
                 group2 = GroupPrincipal.FindByIdentity(ctx, "Użytkownicy");
             }
 
@@ -67,7 +66,7 @@ namespace WpfApp1
 
         void cancel_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
 

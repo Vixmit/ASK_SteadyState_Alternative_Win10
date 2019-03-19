@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApp1
+namespace WpfApp1.Model
 {
-    public class Program
+    public class Disk
     {
         public string name { get; set; }
-        public string fileLocation { get; set; }
-
+        public Disk(string name)
+        {
+            this.name = name;
+        }
     }
 }

@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.View;
 
 namespace WpfApp1
 {
@@ -32,6 +33,9 @@ namespace WpfApp1
         {
             InitializeComponent();
 
+            setComputerRestrictions.MouseLeftButtonDown += new MouseButtonEventHandler(computerRestrictions_Click);
+            scheduleUpdate.MouseLeftButtonDown += new MouseButtonEventHandler(scheduleUpdate_Click);
+            protectDisk.MouseLeftButtonDown += new MouseButtonEventHandler(protectDisk_Click);
             ctx = new PrincipalContext(ContextType.Machine);
 
             //Sprawdź czy jest grupa Shared jak nie to stwórz
@@ -51,10 +55,23 @@ namespace WpfApp1
                 }
             }
 
-            Refresh();
+        Refresh();
         }
+ 
+        void computerRestrictions_Click(object sender, EventArgs e)
+        {
+            Window window = new SetComputerRestrictions(ctx, groupPrincipal);
+            window.Show();
+        }
+        void scheduleUpdate_Click(object sender, EventArgs e)
+        {
 
-
+        }
+        void protectDisk_Click(object sender, EventArgs e)
+        {
+            Window window = new ProtectDisk(ctx, groupPrincipal);
+            window.Show();
+        }
 
         void userListBox_DoubleClick(object sender, EventArgs e)
         {
@@ -76,7 +93,7 @@ namespace WpfApp1
 
         public void Refresh()
         {
-
+           
             //Pobierz użytkowników grupy Shared
             PrincipalSearchResult<Principal> result = groupPrincipal.GetMembers();
 

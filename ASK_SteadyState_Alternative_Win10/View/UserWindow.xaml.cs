@@ -3,6 +3,7 @@ using Shell32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp1.Model;
+using WpfApp1.View;
 
 namespace WpfApp1
 {
@@ -28,6 +31,7 @@ namespace WpfApp1
 
         ObservableCollection<Program> programsLeft;
         ObservableCollection<Program> programsRight;
+        ObservableCollection<Disk> diskList;
         string pathToApps = @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs";
 
         public UserWindow(User user)
@@ -39,12 +43,18 @@ namespace WpfApp1
             if (user != null)
             {
                 UserNameBox.Text = user.name;
+                DescriptionBox.Text = user.principal.Description;
+                hideDrivesBlock.Text = "HIDE DRIVES\nSelect the drives you want to block from the user";
             }
-
             programsLeft = new ObservableCollection<Program>();
             programsRight = new ObservableCollection<Program>();
+            diskList = new ObservableCollection<Disk>();
+            setDisks();
+            setPrograms();
+        }
 
-
+        private void setPrograms()
+        {
             programsListBoxLeft.ItemsSource = programsLeft;
             programsListBoxRight.ItemsSource = programsRight;
             getApps(pathToApps);
@@ -52,37 +62,28 @@ namespace WpfApp1
             programsListBoxRight.Items.Refresh();
         }
 
-        public void getPrograms()
-        {
-            string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(uninstallKey))
+        private void setDisks()
+        { 
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            foreach (DriveInfo d in allDrives)
             {
-                foreach (string skName in rk.GetSubKeyNames())
+                if(d.DriveType.ToString() == "Fixed")
                 {
-                    using (RegistryKey sk = rk.OpenSubKey(skName))
-                    {
-                        try
-                        {
-
-                            Program p = new Program();
-                            p.name = sk.GetValue("DisplayName").ToString();
-                            //var displayName = sk.GetValue("DisplayName");
-                            //var size = sk.GetValue("EstimatedSize");
-                            programsLeft.Add(p);
-                            //Console.WriteLine(displayName + "\t: " + size);
-
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                    }
-                }
-                //label1.Text += " (" + lstDisplayHardware.Items.Count.ToString() + ")";
-                programsListBoxLeft.Items.Refresh();
-                programsListBoxRight.Items.Refresh();
+                    Disk disk = new Disk(d.Name);
+                    diskList.Add(disk);
+                }       
             }
+            diskListBox.ItemsSource = diskList;
+            foreach(Disk e in diskListBox.Items)
+            {
+                if (user.checkAccessDir(e.name))
+                {
+                    diskListBox.SelectedItems.Add(e);
+                }
+                   
+            }
+            diskListBox.Items.Refresh();
         }
-
 
         public void deleteUser_Click(object sender, EventArgs e)
         {
@@ -94,11 +95,46 @@ namespace WpfApp1
         }
 
         void OK_Click(object sender, EventArgs e)
-        {
+        { 
             user.programsLeft = new ObservableCollection<Program>(this.programsLeft);
             user.programsRight = new ObservableCollection<Program>(this.programsRight);
+            if (diskListBox.SelectedItems.Count > 0)
+            {
+                foreach (Disk d in diskList)
+                {
+                    if (checkIsSelected(d))
+                        user.disks.Add(d);
+                    else
+                        user.disksFree.Add(d);
+                }
+            }
+            else
+                foreach (Disk d in diskList)
+                {
+                    user.disksFree.Add(d);
+                }
+            user.blockDisks();
+            user.freeDisks();
+
             user.checkBlockList();
+            user.principal.Description = DescriptionBox.Text;
+            if ((bool)ForceToChange.IsChecked)
+                user.principal.ExpirePasswordNow();
+
+                
+
+            user.principal.Save();
             returnToMainWindow_Click(null, null);
+        }
+
+        bool checkIsSelected(Disk d)
+        {
+            foreach(Disk v in diskListBox.SelectedItems)
+            {
+                if (d.Equals(v))
+                    return true;
+            }
+            return false;
         }
 
         void returnToMainWindow_Click(object sender, EventArgs e)
@@ -110,10 +146,7 @@ namespace WpfApp1
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+ 
 
         void MoveToTheRight_Click(object sender, RoutedEventArgs e)
         {
@@ -201,14 +234,14 @@ namespace WpfApp1
         {
             DirectoryInfo directory = new DirectoryInfo(path);
             DirectoryInfo[] dirs = directory.GetDirectories();
-            foreach (var dir in dirs)
+            foreach(var dir in dirs)
             {
                 StringBuilder sb = new StringBuilder(path);
                 sb.Append(@"\" + dir.Name);
                 getApps(sb.ToString());
             }
             FileInfo[] files = directory.GetFiles("*.lnk");
-            foreach (FileInfo file in files)
+            foreach(FileInfo file in files)
             {
                 Program program = new Program();
                 StringBuilder sb = new StringBuilder(file.Name);
@@ -221,15 +254,15 @@ namespace WpfApp1
                 program.fileLocation = location;
                 sb.Length -= 4;
                 program.name = sb.ToString();
-                if (program.fileLocation != string.Empty)
+                if(program.fileLocation!=string.Empty)
                     if (i == 10)
                         programsLeft.Add(program);
-                    else if (i == 100)
+                    else if(i == 100)
                         programsRight.Add(program);
             }
         }
 
-
+      
 
         public static string GetShortcutTargetFile(string shortcutFilename)
         {
@@ -259,6 +292,28 @@ namespace WpfApp1
             return string.Empty;
         }
 
+        public void changePassword_Click(object sender, RoutedEventArgs e)
+        {
+            Window window = new ChangePassword(user);
+            window.Show();
+        }
+
+        private void ClearAll_Click(object sender, RoutedEventArgs e)
+        {
+            diskListBox.SelectedIndex = -1;
+        }
+
+        private void SelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            diskListBox.SelectAll();
+        }
+
+        private void UserPolicy_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("mmc.exe");
+        }
     }
+
+   
 }
 

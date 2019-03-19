@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using WpfApp1.Model;
 
 namespace WpfApp1
 {
@@ -21,6 +22,8 @@ namespace WpfApp1
         public UserPrincipal principal;
         public ObservableCollection<Program> programsLeft;
         public ObservableCollection<Program> programsRight;
+        public ObservableCollection<Disk> disks;
+        public ObservableCollection<Disk> disksFree;
 
         public User(UserPrincipal principal)
         {
@@ -30,6 +33,8 @@ namespace WpfApp1
             dispName = principal.DisplayName;
             programsLeft = new ObservableCollection<Program>();
             programsRight = new ObservableCollection<Program>();
+            disks = new ObservableCollection<Disk>();
+            disksFree = new ObservableCollection<Disk>();
         }
 
         public void Delete()
@@ -49,6 +54,27 @@ namespace WpfApp1
             principal.Delete();
         }
 
+        public bool checkAccessDir(string fileName)
+        {
+            bool denied = false;
+            string domain = System.Environment.UserDomainName;
+            DirectoryInfo fileInfo = new DirectoryInfo(fileName);
+            DirectorySecurity fileSec = fileInfo.GetAccessControl();
+
+            foreach (FileSystemAccessRule rule in fileSec.GetAccessRules(true, true, typeof(NTAccount)))
+            {
+               
+                string allow = rule.AccessControlType == AccessControlType.Allow ? "grants" : "denies";
+                if (allow == "denies")
+                {
+                    string name = rule.IdentityReference.ToString();
+                    if (name == (domain + @"\" + this.name))
+                        denied = true;
+                }
+            }
+            return denied;
+        }
+       
         public int checkAccess(string fileName)
         {
             bool denied = false;
@@ -68,7 +94,6 @@ namespace WpfApp1
                 }
             }
             FileSecurity fSecurity = File.GetAccessControl(fileName);
-            Console.WriteLine(fileName);
             try
             {
                 if (denied)
@@ -78,7 +103,6 @@ namespace WpfApp1
                     AddFileSecurity(fileName, domain + @"\" + this.name, FileSystemRights.Read, AccessControlType.Deny);
                     RemoveFileSecurity(fileName, domain + @"\" + this.name, FileSystemRights.Read, AccessControlType.Deny);
                 }
-                Console.WriteLine("jestem");
             }
             catch (Exception e)
             {
@@ -104,19 +128,46 @@ namespace WpfApp1
             }
         }
 
+        public void blockDisks()
+        {
+            string domain = System.Environment.UserDomainName;
+            foreach (Disk d in disks)
+            {
+                DirectoryInfo directory = new DirectoryInfo(d.name);
+                try
+                {
+                    AddDirectorySecurity(directory.FullName, domain + @"\" + this.name, FileSystemRights.Read, AccessControlType.Deny);
+                }catch (Exception x)
+                {
+
+                }
+            }
+        }
+
+        public void freeDisks()
+        {
+            string domain = System.Environment.UserDomainName;
+            foreach (Disk d in disksFree)
+            {
+                DirectoryInfo directory = new DirectoryInfo(d.name);
+                try
+                {
+                    RemoveDirectorySecurity(directory.FullName, domain + @"\" + this.name, FileSystemRights.Read, AccessControlType.Deny);
+                }
+                catch (Exception x)
+                {
+
+                }
+            }
+        }
+
  
 
-            public void AddFileSecurity(string fileName, string account,
-         FileSystemRights rights, AccessControlType controlType)
+        public void AddFileSecurity(string fileName, string account,FileSystemRights rights, AccessControlType controlType)
         {
-            // Get a FileSecurity object that represents the
-            // current security settings
             FileSecurity fSecurity = File.GetAccessControl(fileName);
-
-            // Add the FileSystemAccessRule to the security settings.
             fSecurity.AddAccessRule(new FileSystemAccessRule(account,
                 rights, controlType));
-            // Set the new access settings.
             try
             {
                 File.SetAccessControl(fileName, fSecurity);
@@ -127,21 +178,11 @@ namespace WpfApp1
             }
 
         }
-
-        // Removes an ACL entry on the specified file for the specified account.
-        public static void RemoveFileSecurity(string fileName, string account,
-            FileSystemRights rights, AccessControlType controlType)
+        public void RemoveFileSecurity(string fileName, string account,FileSystemRights rights, AccessControlType controlType)
         {
-
-            // Get a FileSecurity object that represents the
-            // current security settings.
             FileSecurity fSecurity = File.GetAccessControl(fileName);
-
-            // Remove the FileSystemAccessRule from the security settings.
             fSecurity.RemoveAccessRule(new FileSystemAccessRule(account,
                 rights, controlType));
-
-            // Set the new access settings.
             try
             {
                 File.SetAccessControl(fileName, fSecurity);
@@ -152,6 +193,32 @@ namespace WpfApp1
             }
 
         }
-
+        public void AddDirectorySecurity(string FileName, string Account, FileSystemRights Rights, AccessControlType ControlType)
+        {
+            DirectoryInfo dInfo = new DirectoryInfo(FileName);
+            DirectorySecurity dSecurity = dInfo.GetAccessControl();
+            dSecurity.AddAccessRule(new FileSystemAccessRule(Account,Rights,ControlType));
+            try
+            {
+                dInfo.SetAccessControl(dSecurity);
+            }catch(Exception e)
+            {
+                throw e;
+            }
+            
+        }
+        public void RemoveDirectorySecurity(string FileName, string Account, FileSystemRights Rights, AccessControlType ControlType)
+        {
+            DirectoryInfo dInfo = new DirectoryInfo(FileName);
+            DirectorySecurity dSecurity = dInfo.GetAccessControl();
+            dSecurity.RemoveAccessRule(new FileSystemAccessRule(Account,Rights,ControlType));
+            try
+            {
+                dInfo.SetAccessControl(dSecurity);
+            }catch (Exception x)
+            {
+                throw x;
+            }
+        }
     }
 }
