@@ -45,16 +45,16 @@
             <MenuItem Header="File" Height="25.429" Width="78.786" Background="{x:Null}"/>
         </Menu>
         <TextBlock HorizontalAlignment="Left" Height="23" Margin="31,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" FontWeight="Bold" FontSize="18" Text="Global Computer Settings" Grid.Row="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="76,36,0,0" Text="Set Computer Restrictions" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="19" Width="171"/>
-        <TextBlock HorizontalAlignment="Left" Margin="73,91,0,0" Text="Schedule Software Updates" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="18" Width="180"/>
-        <TextBlock HorizontalAlignment="Left" Margin="76,135,0,0" Text="Protect the Hard Disk" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="18" Width="142"/>
+        <TextBlock x:Name="setComputerRestrictions" Cursor="Hand" HorizontalAlignment="Left" Margin="76,36,0,0" Text="Set Computer Restrictions" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="19" Width="171"/>
+        <TextBlock x:Name="scheduleUpdate" Cursor="Hand" HorizontalAlignment="Left" Margin="73,91,0,0" Text="Schedule Software Updates" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="18" Width="180"/>
+        <TextBlock x:Name="protectDisk" Cursor="Hand" HorizontalAlignment="Left" Margin="76,135,0,0" Text="Protect the Hard Disk" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Grid.Row="2" Height="18" Width="142"/>
         <TextBlock HorizontalAlignment="Left" Margin="76,55,0,0" Text="System Settings:" VerticalAlignment="Top" Grid.Row="2" Height="16" Width="86"/>
         <TextBlock HorizontalAlignment="Left" Margin="73,107,0,0" VerticalAlignment="Top" Grid.Row="2" Height="16" Width="183"><Run Text="Updates by Windows SteadyState"/><Run Text=": "/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="80,153,0,0" VerticalAlignment="Top" Text="Windows Disk Protection: " Grid.Row="2" Height="16" Width="138"/>
         <TextBlock HorizontalAlignment="Left" Height="23" Margin="32.4,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="252" FontWeight="Bold" FontSize="18" Text="User Settings" Grid.Column="1" Grid.Row="1"/>
         <Image HorizontalAlignment="Left" Height="38" Margin="27,135,0,0" VerticalAlignment="Top" Width="37" Source="..\Icons\disk.png" Grid.Row="2"/>
         <Image HorizontalAlignment="Left" Height="32" Margin="31,91,0,0" VerticalAlignment="Top" Width="33" Source="..\Icons\download.jpg" Grid.Row="2"/>
-        <Image HorizontalAlignment="Left" Height="35" Margin="35,40,0,0" VerticalAlignment="Top" Width="33" Source="..\Icons\windows-7-security-icon.png" Grid.Row="2" RenderTransformOrigin="0.5,0.5">
+        <Image x:Name ="setCRI" HorizontalAlignment="Left" Height="35" Margin="35,40,0,0" VerticalAlignment="Top" Width="33" Source="..\Icons\windows-7-security-icon.png" Grid.Row="2" RenderTransformOrigin="0.5,0.5">
         </Image>
         <!--<Rectangle Height="75.333" Margin="0,25.429,0,0" Stroke="Black" VerticalAlignment="Top">
             <Rectangle.Fill>
